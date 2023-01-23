@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include "BaseObject.hpp"
+#include "Tile.hpp"
 
 class RenderWindow 
 {
@@ -11,6 +12,9 @@ public:
 	void clear();
 	SDL_Texture* loadTexture(const char* filePath);
 	void render(BaseObject& d);
+	void render(Tile& d);
+	void display();
+
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;

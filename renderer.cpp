@@ -1,6 +1,7 @@
 #include "Renderer.hpp"
 #include <SDL_image.h>
 #include <stdio.h>
+#include "UtilClasses.hpp"
 
 
 RenderWindow::RenderWindow(const char* title, int w, int h)
@@ -43,5 +44,19 @@ RenderWindow::~RenderWindow()
 
 void RenderWindow::clear()
 {
+	SDL_SetRenderDrawColor(renderer, 0x31, 0x2E, 0x2B, 0xFF);
 	SDL_RenderClear(renderer);
+}
+
+void RenderWindow::display()
+{
+	SDL_RenderPresent(renderer);
+}
+
+void RenderWindow::render(Tile& d)
+{
+	ColorDef* color = d.getColor();
+	SDL_Rect fillRect = { d.getX(), d.getY(), d.getWidth(), d.getWidth() };
+	SDL_SetRenderDrawColor(renderer, color->red, color->green, color->blue, color->alpha);
+	SDL_RenderFillRect(renderer, &fillRect);
 }

@@ -137,10 +137,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="baseobject.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="piece.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tile.cpp" />
+    <ClCompile Include="UtilClasses.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObject.hpp" />
