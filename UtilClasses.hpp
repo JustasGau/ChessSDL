@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL_stdinc.h>
+#include <SDL.h>
 
 struct ColorDef
 {
@@ -14,6 +14,21 @@ public:
 	}
 };
 
+struct PieceTextures
+{
+	SDL_Texture* wp;
+	SDL_Texture* wk;
+	SDL_Texture* wq;
+	SDL_Texture* wb;
+	SDL_Texture* wn;
+	SDL_Texture* wr;
+	SDL_Texture* bp;
+	SDL_Texture* bk;
+	SDL_Texture* bq;
+	SDL_Texture* bb;
+	SDL_Texture* bn;
+	SDL_Texture* br;
 
+};
 
 //auto operator<=>(const ColorDef&) const = default;

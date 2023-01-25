@@ -1,8 +1,11 @@
 #include "Tile.hpp"
 
-Tile::Tile(int x, int y, ColorDef* color)
-	: xPos(x), yPos(y), color(color)
-	{}
+Tile::Tile(int x, int y, int width, ColorDef* color, std::string id)
+	: xPos(x), yPos(y), width(width), color(color), ID(id)
+{}
+
+Tile::Tile()
+{}
 
 ColorDef* Tile::getColor()
 {

@@ -6,16 +6,11 @@
 #include <cstdlib>
 
 #include "Renderer.hpp"
-#include "UtilClasses.hpp"
+#include "Board.hpp"
 
 
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
-
-
-//Frees media and shuts down SDL
-//void close();
-
 
 void init()
 {
@@ -47,7 +42,6 @@ void init()
 
 void close()
 {
-
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
@@ -66,6 +60,41 @@ int main(int argc, char* args[])
 	//Event handler
 	SDL_Event e;
 
+	// board style
+	ColorDef colorWhite = { 0xEE, 0xEE, 0xD2, 0xFF };
+	ColorDef colorGreen = { 0x76, 0x96, 0x56, 0xFF };
+
+	// preload textures
+	SDL_Texture* white_pawn = window.loadTexture("./gfx/white_pawn.png");
+	SDL_Texture* white_rook = window.loadTexture("./gfx/white_rook.png");
+	SDL_Texture* white_bishop = window.loadTexture("./gfx/white_bishop.png");
+	SDL_Texture* white_knight = window.loadTexture("./gfx/white_knight.png");
+	SDL_Texture* white_king = window.loadTexture("./gfx/white_king.png");
+	SDL_Texture* white_queen = window.loadTexture("./gfx/white_queen.png");
+
+	SDL_Texture* black_pawn = window.loadTexture("./gfx/black_pawn.png");
+	SDL_Texture* black_rook = window.loadTexture("./gfx/black_rook.png");
+	SDL_Texture* black_bishop = window.loadTexture("./gfx/black_bishop.png");
+	SDL_Texture* black_knight = window.loadTexture("./gfx/black_knight.png");
+	SDL_Texture* black_king = window.loadTexture("./gfx/black_king.png");
+	SDL_Texture* black_queen = window.loadTexture("./gfx/black_queen.png");
+
+	PieceTextures allTextures = {
+		white_pawn,
+		white_knight,
+		white_queen,
+		white_bishop,
+		white_knight,
+		white_rook,
+		black_pawn,
+		black_knight,
+		black_queen,
+		black_bishop,
+		black_knight,
+		black_rook
+	};
+	Board board(90, &colorWhite, &colorGreen, allTextures);
+
 	//While application is running
 	while (!quit)
 	{
@@ -81,35 +110,7 @@ int main(int argc, char* args[])
 
 		window.clear();
 
-		ColorDef colorWhite = { 0xEE, 0xEE, 0xD2, 0xFF };
-		ColorDef colorGreen = { 0x76, 0x96, 0x56, 0xFF };
-		ColorDef currentColor = colorWhite;
-		int width = 100;
-		for (int i = 0; i < 8; i++)
-		{
-			currentColor = currentColor == colorWhite ? colorGreen : colorWhite;
-			for (int j = 0; j < 8; j++)
-			{
-				currentColor = currentColor == colorWhite ? colorGreen : colorWhite;
-				Tile tile1(i* width, j* width, &currentColor);
-				window.render(tile1);
-			}
-		}
-
-
-		
-		//SDL_Rect fillRect = { 100, 100, 100, 100 };
-		//SDL_SetRenderDrawColor(gRenderer, 0xEE, 0xEE, 0xD2, 0xFF);
-		//SDL_RenderFillRect(gRenderer, &fillRect);
-
-		//SDL_Rect fillRect2 = { 200, 200, 100, 100 };
-		//SDL_SetRenderDrawColor(gRenderer, 0x76, 0x96, 0x56, 0xFF);
-		//SDL_RenderFillRect(gRenderer, &fillRect2);
-
-		//SDL_Rect renderQuad = { 10, 20, 100, 100 };
-
-		//SDL_RenderCopy(gRenderer, loadTexture("./dot.bmp"), NULL, &renderQuad);
-
+		board.render(window.getRenderer());
 
 		//Update screen
 		window.display();

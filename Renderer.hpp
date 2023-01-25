@@ -11,7 +11,8 @@ public:
 	~RenderWindow();
 	void clear();
 	SDL_Texture* loadTexture(const char* filePath);
-	void render(BaseObject& d);
+	SDL_Renderer* getRenderer();
+	//void render(BaseObject& d);
 	void render(Tile& d);
 	void display();
 

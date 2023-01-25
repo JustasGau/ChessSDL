@@ -60,3 +60,8 @@ void RenderWindow::render(Tile& d)
 	SDL_SetRenderDrawColor(renderer, color->red, color->green, color->blue, color->alpha);
 	SDL_RenderFillRect(renderer, &fillRect);
 }
+
+SDL_Renderer* RenderWindow::getRenderer()
+{
+	return renderer;
+}
