@@ -7,6 +7,8 @@
 
 #include "Renderer.hpp"
 #include "Board.hpp"
+#include "FEN.hpp"
+#include <iostream>
 
 
 const int SCREEN_WIDTH = 1280;
@@ -50,6 +52,11 @@ void close()
 
 int main(int argc, char* args[])
 {
+	FEN fen;
+	bool isValid = fen.validateFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 10 a");
+	std::cout << isValid << "\n";
+	// early return for faster testing
+	return 0;
 	RenderWindow window("ChessSDL", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	init();
@@ -94,6 +101,8 @@ int main(int argc, char* args[])
 		black_rook
 	};
 	Board board(90, &colorWhite, &colorGreen, allTextures);
+
+	board.initPostitions("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
 
 	//While application is running
 	while (!quit)

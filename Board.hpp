@@ -13,6 +13,8 @@ class Board
 {
 public:
 	Board(int tileWidth, ColorDef* primaryColor, ColorDef* secondaryColor, PieceTextures textures);
+	// takes FEN notation for starting position
+	void initPostitions(std::string fenNotation);
 	void render(SDL_Renderer* renderer);
 private:
 	void renderBoard(SDL_Renderer* renderer);
@@ -20,6 +22,7 @@ private:
 	void initPeaces();
 	void addWP(std::string id);
 	void addBP(std::string id);
+
 	std::map<std::string, Tile> tiles;
 	std::vector<Piece> pieces;
 	PieceTextures textures;

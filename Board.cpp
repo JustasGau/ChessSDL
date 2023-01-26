@@ -9,17 +9,15 @@ Board::Board(int tileWidth, ColorDef* primaryColor, ColorDef* secondaryColor, Pi
 	: textures(textures)
 {
 	const char letterMap[9] = "ABCDEFGH";
-
 	ColorDef* currentColor = primaryColor;
-	for (int i = 0; i < 8; i++)
+	for (int file = 0; file < 8; file++)
 	{
-		currentColor = currentColor == primaryColor ? secondaryColor : primaryColor;
-		for (int j = 0; j < 8; j++)
+		for (int rank = 0; rank < 8; rank++)
 		{
-			std::string newId = letterMap[i] + std::to_string(8 - j);
+			std::string newId = letterMap[file] + std::to_string(8 - rank);
 			std::cout << newId << "\n";
-			currentColor = currentColor == primaryColor ? secondaryColor : primaryColor;
-			Tile newTile(i * tileWidth, j * tileWidth, tileWidth, currentColor, newId);
+			currentColor = (file + rank)%2 == 0 ? secondaryColor : primaryColor;
+			Tile newTile(file * tileWidth, rank * tileWidth, tileWidth, currentColor, newId);
 			tiles[newId] = newTile;
 		}
 	}
@@ -41,6 +39,11 @@ void Board::addBP(std::string id)
 	Piece newPiece(tile.getWidth(), true, textures.bp);
 	newPiece.setActiveTile(tile);
 	pieces.push_back(newPiece);
+}
+
+void Board::initPostitions(std::string fenNotation)
+{
+
 }
 
 void Board::initPeaces()

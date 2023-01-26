@@ -7,11 +7,6 @@ struct ColorDef
 	Uint8 green;
 	Uint8 blue;
 	Uint8 alpha;
-public:
-	bool operator==(const ColorDef& first)
-	{
-		return first.red == red;
-	}
 };
 
 struct PieceTextures
@@ -30,5 +25,3 @@ struct PieceTextures
 	SDL_Texture* br;
 
 };
-
-//auto operator<=>(const ColorDef&) const = default;
