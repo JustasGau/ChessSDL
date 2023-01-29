@@ -3,6 +3,7 @@
 #include "UtilClasses.hpp"
 #include <SDL.h>
 #include <iostream>
+#include "FEN.hpp"
 
 
 Board::Board(int tileWidth, ColorDef* primaryColor, ColorDef* secondaryColor, PieceTextures textures)
@@ -15,7 +16,6 @@ Board::Board(int tileWidth, ColorDef* primaryColor, ColorDef* secondaryColor, Pi
 		for (int rank = 0; rank < 8; rank++)
 		{
 			std::string newId = letterMap[file] + std::to_string(8 - rank);
-			std::cout << newId << "\n";
 			currentColor = (file + rank)%2 == 0 ? secondaryColor : primaryColor;
 			Tile newTile(file * tileWidth, rank * tileWidth, tileWidth, currentColor, newId);
 			tiles[newId] = newTile;
@@ -43,6 +43,14 @@ void Board::addBP(std::string id)
 
 void Board::initPostitions(std::string fenNotation)
 {
+	FEN fen;
+	bool isValid = fen.validateFEN(fenNotation);
+	if (!isValid) {
+		printf("Fen notation is incorrect.");
+		return;
+	}
+
+	startState state = fen.parseFEN(fenNotation);
 
 }
 

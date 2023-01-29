@@ -7,7 +7,6 @@
 
 #include "Renderer.hpp"
 #include "Board.hpp"
-#include "FEN.hpp"
 #include <iostream>
 
 
@@ -52,11 +51,6 @@ void close()
 
 int main(int argc, char* args[])
 {
-	FEN fen;
-	bool isValid = fen.validateFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 10 a");
-	std::cout << isValid << "\n";
-	// early return for faster testing
-	return 0;
 	RenderWindow window("ChessSDL", SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	init();

@@ -1,6 +1,7 @@
 #include "FEN.hpp"
 #include <vector>
 #include <iostream>
+#define DEBUG 0
 
 std::vector<std::string> splitString(std::string str, std::string deli = " ")
 {
@@ -24,12 +25,66 @@ bool is_number(const std::string& s)
 	return !s.empty() && it == s.end();
 }
 
+bool validateCastling(std::string castling) {
+	std::string castlingAvailable = "KQkq";
+	std::string uniqueAccum = "";
+
+	if (castling.size() > 4)
+	{
+		printf("Castling '%s' is incorrect - too long. Acceptable notation '%s'.\n", castling.c_str(), castlingAvailable.c_str());
+		return false;
+	}
+	if (castling != "-")
+	{
+		for (int i = 0; i < castling.size(); i++)
+		{
+			std::size_t found = castlingAvailable.find(castling[i]);
+			std::size_t foundDup = uniqueAccum.find(castling[i]);
+
+			if (found == -1)
+			{
+				printf("Castling '%s' is incorrect. Acceptable notation '%s'.\n", castling.c_str(), castlingAvailable.c_str());
+				return false;
+			}
+			else if (foundDup != -1)
+			{
+				printf("Castling '%s' is incorrect. Symbols can not repeat.\n", castling.c_str());
+				return false;
+			}
+			else
+			{
+				uniqueAccum += castling[i];
+			}
+		}
+	}
+	return true;
+}
+
+// TODO
+bool validatePosition(std::string positions)
+{
+	return true;
+}
+
+// TODO
+bool validateEnPassant(std::string enp)
+{
+	return true;
+}
+
 FEN::FEN()
 {}
+
 
 bool FEN::validateFEN(std::string fen)
 {
 	std::vector<std::string> tokens = splitString(fen);
+
+#if DEBUG == 1
+	for (const std::string &token : tokens) {
+		std::cout << token << "\n";
+	}
+#endif
 	if (tokens.size() != 6) {
 		printf("Incorrect amount of parts in FEN string\n");
 		return false;
@@ -39,15 +94,33 @@ bool FEN::validateFEN(std::string fen)
 		printf("Incorrect amount of files in position part of FEN string\n");
 		return false;
 	}
-	if (!is_number(tokens[4])) {
-		std::cout << stoi(tokens[4]) << "\n";
-		printf("Halfmoves '%s' is not a number\n", tokens[4]);
+
+	std::string positions = tokens[0];
+	std::string turn = tokens[1];
+	std::string castling = tokens[2];
+	std::string enp = tokens[3];
+	std::string halfmoves = tokens[4];
+	std::string fullmoves = tokens[5];
+
+	if (!validatePosition(positions)) return false;
+	if (!validateCastling(castling)) return false;
+	if (!validateEnPassant(enp)) return false;
+
+	if (turn != "w" && turn != "b")
+	{
+		printf("Turn '%s' is incorrect. Values: w or b are acceptable.\n", turn.c_str());
 		return false;
 	}
 
-	if (!is_number(tokens[5])) {
-		std::cout << stoi(tokens[5]) << "\n";
-		printf("Fullmoves '%s' is not a number\n", tokens[5]);
+	if (!is_number(halfmoves))
+	{
+		printf("Halfmoves '%s' is not a number\n", halfmoves.c_str());
+		return false;
+	}
+
+	if (!is_number(fullmoves))
+	{
+		printf("Fullmoves '%s' is not a number\n", fullmoves.c_str());
 		return false;
 	}
 
@@ -56,14 +129,30 @@ bool FEN::validateFEN(std::string fen)
 
 startState FEN::parseFEN(std::string fen)
 {
-	std::map<std::string, std::string> positions;
+	std::vector<std::string> tokens = splitString(fen);
+	std::string positions = tokens[0];
+	std::string turn = tokens[1];
+	std::string castling = tokens[2];
+	std::string enp = tokens[3];
+	std::string halfmoves = tokens[4];
+	std::string fullmoves = tokens[5];
+
+	bool whitesTurn = turn == "w" ? true : false;
+	unsigned int castlingRights = 0;
+	if (castling.find("K")) castlingRights = castlingRights | WhiteKingside;
+	if (castling.find("k")) castlingRights = castlingRights | BlackKingside;
+	if (castling.find("Q")) castlingRights = castlingRights | WhiteQueenside;
+	if (castling.find("q")) castlingRights = castlingRights | BlackQueenside;
+
+
+	std::map<std::string, std::string> positionsParsed;
 	startState parsedState = {
-		positions,
-		true,
-		0,
-		"-",
-		0,
-		0,
+		positionsParsed,
+		whitesTurn,
+		castlingRights,
+		enp,
+		(unsigned int) std::stoi(halfmoves),
+		(unsigned int) std::stoi(fullmoves),
 	};
 	return parsedState;
 }
